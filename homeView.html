@@ -1,0 +1,21 @@
+<div class="col-12 form-inline" ng-repeat="item in events">
+	<div class="row">
+		<div class="col-2">
+			<input type="text" class="form-control" id="title" value="{{item.title}}" placeholder="title">
+		</div>
+		<div class="col-6">
+			<datetimepicker min-date="minDate" hour-step="hourStep"
+											 minute-step="minuteStep" ng-model="item.startDatetime" >
+		</div>
+		<!--<div class="col-3">
+
+		</div>
+		<div class="col-2">
+			<input type="text" class="form-control" id="location" value="{{item.location}}" placeholder="location">
+		</div>
+		<div class="col-2">
+			<a href="#remove" id="remove_">X</a>
+		</div>-->
+
+	</div>
+</div>

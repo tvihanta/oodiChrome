@@ -1,0 +1,649 @@
+
+<!-- saved from url=(0401)https://weboodi.ulapland.fi/lay/opettaptied.jsp?MD5avain=ca56d810219f00cc6a2cd9d6aa1ca7b8&Kieli=1&OpetTap=20249311&haettuOrg=&sortJarj=&haettuOrg=&Kieli=1&NimiTunniste=&AlkPvm=&PaatPvm=&Selite=&Sivu=&haettuOpas=&haettuOppAin=&haettuLk=&haettuOpetKiel=&&haeOpintJaks=&takaisin=opintjakstied.jsp&OpinKohd=18658847&takaisin2=omatopinn.jsp&haeVainIlmKelp=&haeMyosAlemOrg=&eHOPSpaluu=0&eHOPSpaluusivu=&Org= -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        <title>WebOodi</title>
+        
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="Pragma" content="no-cache">
+        
+
+        <script src="./jquery.min.js"></script><style type="text/css"></style>
+        <script src="./jquery.validate.min.js"></script>
+        <script src="./additional-methods.min.js"></script>
+
+        
+        <script src="./messages_fi.min.js"></script>
+        
+        
+
+        <script type="text/javascript">
+            $(function() {
+                $('#8').validate({
+                    errorPlacement: function(error, element) {
+                        error.appendTo(element.parent());
+                    }
+                });
+
+                $('.questionWithOptionsUiId').each(function() {
+                    var id = $(this).val();
+                    var isRequired = $('#questionWithOptionsUiIdRequired_' + id).val() == 'true';
+
+                    if(isRequired) {
+                        $('input[name="questionWithOptionsAnswer_' + id + '"]').rules('add', 'required');
+                    }
+                });
+            });
+        </script>
+
+        <link href="./style.css" rel="styleSheet" type="text/css">
+        
+        <script type="text/javascript">
+            function disableSaveButton() {
+                if($('#8').valid()) {
+                    $('input[name="TALLENNA"]').prop("disabled", true);
+                }
+            }
+
+            function DataCheck()
+        {
+
+        document.ilmotForm.JavaScriptOn.value = 1;
+        var onPrioLkm = parseInt((document.ilmotForm.onPrioLkm.value)); //on jo ilmojen lkm
+        var eiPrioLkm = parseInt((document.ilmotForm.eiPrioLkm.value)); //ilmo checkboxien lkm
+        var onPrioTaul = [];
+        var eiPrioTaul = [];
+        var prioVirh = 0;
+        var myIndex  = 0;
+        var selValue = 0;
+        var paaOpetTapIlm = 0;
+        var priorTyypTmp = 0;
+        var paaOpetTapIlmCheckBoxNayt = 0;
+        var tmpC = 0; //apumuuttuja
+        var e = 0; //apumuuttuja
+        var f = 0; //apumuuttuja
+        var tmpEiPrioLkm = 0;
+        var eiPrioLkmTod = 0; // valittujen checkboxien lkm
+        var PrioriJavaScriptVirhe=0;
+           // on jo ilmojen prioriteetit talteen
+           try{
+                for (var c = 1; c <= onPrioLkm; c++) {
+                        myIndex = eval("document.ilmotForm.OsaOpetTapOnPrio" + c + ".selectedIndex");
+                        selValue = eval("document.ilmotForm.OsaOpetTapOnPrio" + c+ ".options[myIndex].value");
+                        if (!(eval("document.ilmotForm.OsaOpetTapPoista" + c + ".checked"))) {
+                                onPrioTaul[c-1] = selValue;
+                        }
+                }
+           }catch (e){PrioriJavaScriptVirhe=1;}
+
+           // valittujen checkboxien prioriteetit talteen
+           // jos pÃ¤Ã¤opetustapahtumassa oli jo ilmo, lÃ¤htee indeksointi 0:sta osaopetustahtumilla!
+           paaOpetTapIlm = parseInt((document.ilmotForm.paaOpetTapIlm.value));
+           try {
+                paaOpetTapIlmCheckBoxNayt = parseInt((document.ilmotForm.paaOpetTapIlmCheckBoxNayt.value));
+           }catch (e){paaOpetTapIlmCheckBoxNayt=0;}
+
+           priorTyypTmp = parseInt((document.ilmotForm.priorTyyp.value));
+
+           if (paaOpetTapIlm == 1 || paaOpetTapIlmCheckBoxNayt == 0) {
+                tmpC = 0;
+                tmpEiPrioLkm = eiPrioLkm -1;
+           } else {
+                tmpC = 1;
+                tmpEiPrioLkm = eiPrioLkm;
+           }
+
+          try{   
+           for (var c = tmpC; c <= tmpEiPrioLkm; c++) {
+                if (eval("document.ilmotForm.OsaOpetTap" + c + ".checked")) {
+                        eiPrioLkmTod = eiPrioLkmTod + 1;
+                        e = c;
+                        if (paaOpetTapIlm == 1 || paaOpetTapIlmCheckBoxNayt == 0)
+                                e = e + 1;
+                        myIndex = eval("document.ilmotForm.OsaOpetTapEiPrio" + e + ".selectedIndex");
+                        selValue = eval("document.ilmotForm.OsaOpetTapEiPrio" + e + ".options[myIndex].value");
+
+                        //tarkastetaan, ettÃ¤ valittuihin osaopettap ilmoihin oli valittu myÃ¤s prioriteetit
+                        //VPK20060820-100100LV
+                        if (selValue == -1)
+                                prioVirh = 2; 
+
+                        eiPrioTaul[f] = selValue;
+                        f = f + 1;
+                }
+           }
+          }catch (e){PrioriJavaScriptVirhe=1;}
+
+
+        //jos vielÃ¤ kaikki ok, tehdÃ¤Ã¤n tarkastukset
+        if (prioVirh == 0) {
+
+                if (onPrioTaul.length>0){
+                // tarkistetaan ettei samoja prioriteetteja ole annettu on jo ilmojen osalta
+                        for (var c = 0; c < onPrioLkm; c++) {
+                                for (var d = c+1; d < onPrioLkm; d++) {
+                                        if (onPrioTaul[c] == onPrioTaul[d]){
+                                                prioVirh = 1
+                                        }
+                                }
+                        }
+                }
+
+
+           // jos prioriteetit ok, tarkistetaan ettei samoja ole checkbox-joukossa
+           if (prioVirh == 0) {
+                for (var c = 0; c < eiPrioLkmTod; c++) {
+                        for (var d = c+1; d < eiPrioLkm; d++) {
+                                if (eiPrioTaul[c] == eiPrioTaul[d])
+                                        prioVirh = 1    
+                        }
+                }
+           }
+
+           // jos prioriteetit ok, tarkistetaan ettei samoja ole ristiin
+           if (prioVirh == 0) {
+                for (var c = 0; c < onPrioLkm; c++) {
+                        for (var d = 0; d < eiPrioLkmTod; d++) {
+                                if (onPrioTaul[c] == eiPrioTaul[d])
+                                        prioVirh = 1    
+                        }
+                }
+           }
+
+           //tarkastetaan ettei olemassa oleviin ilmoihin ole valittu "-" prioriteetiksi
+           //if (prioVirh == 0) {
+                for (var c = 0; c < onPrioLkm; c++) {
+                        if (onPrioTaul[c] == -1)
+                                prioVirh = 3
+                }
+          //}
+        }//prioVirh==0
+
+           if (prioVirh == 1 && PrioriJavaScriptVirhe==0) {
+                alert("Kutakin prioriteettia voi käyttää ainoastaan kerran");
+                return false;
+           } else {
+                if ((prioVirh == 2 && eiPrioLkmTod > 0) || prioVirh==3) {
+                        alert("Valitse prioriteetti");
+                        return false;
+                } else {
+                        return true;
+                }
+           }
+        }
+
+        </script>
+
+
+    </head><script>function inject(){function a(){function a(a){parent.postMessage({type:"blockedWindow",args:JSON.stringify(a)},l)}function b(a){var b=a[1];return null!=b&&["_blank","_parent","_self","_top"].indexOf(b)<0?b:null}function e(a,b){var c;for(c in a)try{void 0===b[c]&&(b[c]=a[c])}catch(d){}return b}var g=arguments,h=!0,j=null,k=null;if(null!=window.event&&(k=window.event.currentTarget),null==k){for(var m=g.callee;null!=m.arguments&&null!=m.arguments.callee.caller;)m=m.arguments.callee.caller;null!=m.arguments&&m.arguments.length>0&&null!=m.arguments[0].currentTarget&&(k=m.arguments[0].currentTarget)}null!=k&&(k instanceof Window||k===document||null!=k.URL&&null!=k.body||null!=k.nodeName&&("body"==k.nodeName.toLowerCase()||"#document"==k.nodeName.toLowerCase()))?(window.pbreason="Blocked a new window opened with URL: "+g[0]+" because it was triggered by the "+k.nodeName+" element",h=!1):h=!0;document.webkitFullscreenElement||document.mozFullscreenElement||document.fullscreenElement;if(((new Date).getTime()-d<1e3||isNaN(d)&&c())&&(window.pbreason="Blocked a new window opened with URL: "+g[0]+" because a full screen was just initiated while opening this url.",document.exitFullscreen?document.exitFullscreen():document.mozCancelFullScreen?document.mozCancelFullScreen():document.webkitCancelFullScreen&&document.webkitCancelFullScreen(),h=!1),1==h){j=f.apply(this,g);var n=b(g);if(null!=n&&(i[n]=j),j!==window){var o=(new Date).getTime(),p=j.blur;j.blur=function(){(new Date).getTime()-o<1e3?(window.pbreason="Blocked a new window opened with URL: "+g[0]+" because a it was blured",j.close(),a(g)):p()}}}else{var q={href:g[0]};q.replace=function(a){q.href=a},j={close:function(){return!0},test:function(){return!0},blur:function(){return!0},focus:function(){return!0},showModelessDialog:function(){return!0},showModalDialog:function(){return!0},prompt:function(){return!0},confirm:function(){return!0},alert:function(){return!0},moveTo:function(){return!0},moveBy:function(){return!0},resizeTo:function(){return!0},resizeBy:function(){return!0},scrollBy:function(){return!0},scrollTo:function(){return!0},getSelection:function(){return!0},onunload:function(){return!0},print:function(){return!0},open:function(){return this},opener:window,closed:!1,innerHeight:480,innerWidth:640,name:g[1],location:q,document:{location:q}},e(window,j),j.window=j;var n=b(g);if(null!=n)try{i[n].close()}catch(r){}setTimeout(function(){var b;b=j.location instanceof Object?j.document.location instanceof Object?null!=q.href?q.href:g[0]:j.document.location:j.location,g[0]=b,a(g)},100)}return j}function b(a){d=a?(new Date).getTime():0/0}function c(){return document.fullScreenElement&&null!==document.fullScreenElement||null!=document.mozFullscreenElement||null!=document.webkitFullscreenElement}var d,e="originalOpenFunction",f=window.open,g=document.createElement,h=document.createEvent,i={},j=0,k=null,l=window.location!=window.parent.location?document.referrer:document.location;window[e]=window.open,window.open=function(){try{return a.apply(this,arguments)}catch(b){return null}},document.createElement=function(){var a=g.apply(document,arguments);if("a"==arguments[0]||"A"==arguments[0]){j=(new Date).getTime();var b=a.dispatchEvent;a.dispatchEvent=function(c){return null!=c.type&&"click"==(""+c.type).toLocaleLowerCase()?(window.pbreason="blocked due to an explicit dispatchEvent event with type 'click' on an 'a' tag",parent.postMessage({type:"blockedWindow",args:JSON.stringify({0:a.href})},l),!0):b(c)},k=a}return a},document.createEvent=function(){try{return arguments[0].toLowerCase().indexOf("mouse")>=0&&(new Date).getTime()-j<=50?(window.pbreason="Blocked because 'a' element was recently created and "+arguments[0]+" event was created shortly after",arguments[0]=k.href,parent.postMessage({type:"blockedWindow",args:JSON.stringify({0:k.href})},l),null):h.apply(document,arguments)}catch(a){}},document.addEventListener("fullscreenchange",function(){b(document.fullscreen)},!1),document.addEventListener("mozfullscreenchange",function(){b(document.mozFullScreen)},!1),document.addEventListener("webkitfullscreenchange",function(){b(document.webkitIsFullScreen)},!1)} inject()</script>
+    <body>
+
+
+        
+        
+        
+        
+
+        
+         
+        <table width="100%" border="0">
+            
+            </table><table width="100%"><tbody><tr> <td class="E" valign="top">   
+                            <div class="sivuotsikko">Opetustapahtuma</div>
+
+
+                            
+                    <form id="6" method="post" action="https://weboodi.ulapland.fi/lay/opintjakstied.jsp?MD5avain=ca56d810219f00cc6a2cd9d6aa1ca7b8&amp;Kieli=1&amp;OpinKohd=18658847&amp;takaisin=omatopinn.jsp&amp;NaytSuun=0&amp;NaytSuor=0&amp;NaytHyl=0&amp;NaytIlm=1">
+
+                    </form></td><td class="E" align="right"><input type="submit" value="Takaisin"><br> </td></tr> 
+                    <input type="hidden" name="webHistory" value="1">
+                
+
+                
+                </tbody>
+            </table>
+
+
+            
+
+            <div class="ilmoitus"> </div>
+
+            
+
+            
+            <br>
+            <div class="tauluotsikko">ONPOOL10, Ympäristö- ja luonnonvaraoikeus/Ympäristönsuojeluoikeus, 10 op </div>
+            <table width="100%">
+                <tbody>
+                    <tr><td>
+                            <table width="100%" border="0">
+                                <tbody>
+                                <tr><td class="H" valign="top" nowrap="">Koodi</td>
+                                <td>ONPOOL10</td>
+                                <td class="H" valign="top" nowrap="">Opetuskielet</td>
+                                <td>suomi</td>
+                                
+                                <form id="7" method="get" action="https://weboodi.ulapland.fi/lay/opintjakstied.jsp"></form>
+                                    <td align="right">
+                                        <input type="hidden" name="MD5avain" value="ca56d810219f00cc6a2cd9d6aa1ca7b8">
+                                        <input type="hidden" name="Kieli" value="1">
+                                        <input type="hidden" name="OpinKohd" value="18658847">
+                                        <input type="hidden" name="OpetTap" value="20249311">
+                                        <input type="hidden" name="takaisin" value="opettaptied.jsp">
+                                        <input type="hidden" name="vl_tila" value="">
+                                        <input type="hidden" name="Opas" value="">
+                                        <input type="hidden" name="ooo_SortJarj" value="">
+                                        <input type="hidden" name="Org" value="">
+                                        <input type="hidden" name="haettuOpas" value="">
+                                        
+                                        <input type="submit" value="Näytä opintojakso">
+                                        
+                                    </td>
+                                
+                                
+                    </tr>
+                    <tr>
+                        <td class="H" nowrap="">Nimi</td>
+                        <td>Ympäristö- ja luonnonvaraoikeus/Ympäristönsuojeluoikeus</td>
+                        <td class="H" nowrap="">Lyhennenimi</td>
+                        <td>Ympäristö- ja luonno&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="H" valign="top" nowrap="">Laajuus</td>
+                        <td>10 op&nbsp;</td>
+                        <td class="H" valign="top" nowrap="">Vastuuyksikkö</td>
+                        <td>Oikeustieteiden tiedekunta&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="H" valign="top" nowrap="">Tyyppi</td>
+                        <td>Luento&nbsp;</td>
+                        <td class="H" valign="top" nowrap="">Arvostelu</td>
+                        <td>Hyväksytty, hylätty, arvosanat 1-5&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="H" valign="top" nowrap="">Aika</td>
+                        <td valign="top" nowrap="">
+                            29.03.2016 -31.03.2016
+                        </td>
+                        <td class="H" valign="top" nowrap="">Lisätietoja</td>
+                        <td>    
+                            
+                            &nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="H" valign="top" nowrap="">Opetus suunnattu</td>
+                        <td valign="top">
+                            
+                            
+
+                        </td>
+                    </tr>
+                    
+
+                    
+                    <tr>
+                        
+                        <td class="H" valign="top" nowrap="">Tietoja viimeksi muutettu</td>
+                        <td valign="top">
+                            
+                            07.01.2016
+                        </td>                           
+                    </tr>
+                </tbody>
+            </table>
+        </td></tr>
+</tbody>
+</table>
+
+
+
+
+<br>
+<div class="tauluotsikko">Kuvaukset</div>
+<table width="100%" border="0">
+    <tbody>
+        <tr><td>
+                <table width="100%">
+                    <tbody>
+                        
+                            
+        
+        <tr>
+            <td>Ei kuvaustietoja</td>
+        </tr>
+        
+
+    </tbody>
+</table>
+
+</td></tr>
+</tbody>
+</table>
+
+
+<form id="8" name="ilmotForm" onsubmit="disableSaveButton();" method="post" action="https://weboodi.ulapland.fi/lay/ilmopet.jsp" novalidate="novalidate">
+    <input type="hidden" name="NimiTunniste" value="">
+    <input type="hidden" name="AlkPvm" value="">
+    <input type="hidden" name="PaatPvm" value="">
+    <input type="hidden" name="haeOpetTap" value="">
+    <input type="hidden" name="haeOpintJaks" value="">
+    <input type="hidden" name="haettuOrg" value="">
+    <input type="hidden" name="haettuLk" value="">
+    <input type="hidden" name="sortJarj" value="">
+    <input type="hidden" name="Selite" value="">
+    <input type="hidden" name="haettuOpetKiel" value="">
+    <input type="hidden" name="haeVainIlmKelp" value="">
+    <input type="hidden" name="haeMyosAlemOrg" value="">
+    <input type="hidden" name="haettuOpas" value="">
+    <input type="hidden" name="Org" value="">
+    <input type="hidden" name="takaisin" value="opintjakstied.jsp">
+    
+    <input type="hidden" name="takapu" value="opintjakstied.jsp">
+    <input type="hidden" name="OpinKohd" value="18658847">
+    <input type="hidden" name="vl_tila" value="">
+    
+
+    
+    
+
+    
+    
+    <br>
+    <input type="hidden" name="MD5avain" value="ca56d810219f00cc6a2cd9d6aa1ca7b8">
+    <input type="hidden" name="Kieli" value="1">
+    <input type="hidden" name="PaaOpetTap" value="20249311">
+
+    
+    <div class="tauluotsikko">Valitse opetustapahtumat, joihin haluat ilmoittautua.</div>
+    
+    <table width="100%"> 
+        <tbody>
+            <tr>
+                <th valign="bottom" width="16%">
+        <table width="100%">
+            <tbody>
+                <tr>
+                    <th colspan="3">Ilmoittautuminen</th>
+                </tr>
+            </tbody>
+        </table>
+        </th>
+        
+
+        <th valign="bottom">
+        <table width="100%" border="0">
+            <tbody>
+                <tr>	
+                    <th width="32%" align="left" valign="bottom">
+                        Luento&nbsp;
+                    </th>
+                    <th width="32%" align="left" valign="bottom">
+                        Opettaja
+                    </th>
+                    <th width="36%" align="left" valign="bottom">
+                        Aika ja Paikka 
+                    </th>
+                    
+                </tr>
+            </tbody>				 
+        </table>
+        </th>
+        </tr>
+        
+
+        
+
+        
+
+
+        
+        
+        <tr>
+
+            
+            
+            
+
+            <td width="13%" valign="top" class="">
+
+
+                <table width="100%" border="0" class="">
+                    <tbody><tr>
+                        <th align="left" valign="bottom" width="33%"><label for="paailmo">Ilm.</label></th>
+                        <th align="left" valign="bottom" width="33%"><label for="paapois">Peru</label></th>
+                        <th align="left" valign="bottom" width="33%">ilm/max</th>
+                    </tr>
+                    </tbody><tbody>
+                        
+
+
+                        <tr><input type="hidden" name="paaOpetTapIlm" value="0">
+                    <input type="hidden" name="priorTyyp" value="0">
+                    <td colspan="3" class=""><table width="100%"><tbody><tr>
+                                
+                            <td width="33%" class="" valign="top">&nbsp;</td>
+                            
+                            <td width="33%" class="" valign="top">&nbsp;</td>
+                            
+                            <td width="33%" align="right" valign="top" class=""> 
+                                
+                                
+
+<input type="HIDDEN" name="OpetTapIlmLink_1" value="20249311">
+<input type="SUBMIT" class="submit" name="LINKOPETTAPILMOT_1" value="72/-">
+
+                                
+                                
+                            </td>
+                            </tr>
+                            
+                            
+                    </tbody></table>
+        </td></tr>
+        	 
+        
+
+
+
+        
+
+        <tr>
+            <td colspan="3" class="" valign="top">
+                
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="3" align="left" class="">
+                
+                <font class="huom">Ilmoittautumisaika päättynyt</font>
+                
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="" align="left" valign="top" nowrap="">
+                
+                
+                12.08.15
+                klo 12.00-<br>
+                01.03.16
+                klo 23.59
+                
+                
+                
+            </td>
+        </tr>
+        
+
+        </tbody>
+    </table>
+</td>
+
+
+
+
+<td class="" valign="top">
+    <table width="100%" class="" border="0">
+        <tbody>
+            <tr>
+
+
+                <td width="32%" valign="top" class="">Ympäristö- ja luonnonvaraoikeus/Ympäristönsuojeluoikeus  
+                </td>
+                <td width="32%" valign="top" class=""> 
+                    
+                    Matti Hepola  
+                </td>
+                <td width="36%" valign="top" class="">
+                    <table width="100%" border="0" class="">
+                        <tbody>
+                            <tr> <td valign="top" class="" nowrap="">29.03.16<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;ti&nbsp;12.00-14.00&nbsp;
+                                    
+
+
+<input type="HIDDEN" name="OpetPaikLink_1" value="5009799">
+<input type="SUBMIT" class="submit2" name="LINKOPETPAIK_1" value="LS3">
+
+                                    <br>
+                                    </td></tr><tr> <td valign="top" class="" nowrap="">30.03.16<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;ke&nbsp;09.00-12.00&nbsp;
+                                    
+
+
+<input type="HIDDEN" name="OpetPaikLink_2" value="5009799">
+<input type="SUBMIT" class="submit2" name="LINKOPETPAIK_2" value="LS3">
+
+                                    <br>
+                                    </td></tr><tr> <td valign="top" class="" nowrap="">31.03.16<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;09.00-12.00&nbsp;
+                                    
+
+
+<input type="HIDDEN" name="OpetPaikLink_3" value="5009799">
+<input type="SUBMIT" class="submit2" name="LINKOPETPAIK_3" value="LS3">
+
+                                    <br>
+                                    
+                                </td></tr>
+                                
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</td></tr>
+</tbody> 
+</table>
+ 
+
+
+
+
+
+    
+    <br>
+    <table border="0" width="100%">
+        <tbody>
+            <tr><td>
+                    <table width="100%">
+                        <tbody>
+                            <tr><td valign="top"><label for="listiet">Lisätietoja</label></td><td><textarea id="listiet" cols="80" maxlength="1500" rows="4" name="lisatiet1"></textarea></td></tr>
+                            
+                        <input type="hidden" name="ii" value="0">
+                        <input type="hidden" name="LoytLisTied" value="0">	
+                        <input type="hidden" name="PaaOpetTap" value="20249311">
+                        
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+
+
+<br><br>
+
+<input type="checkbox" id="saaNayttaa" name="saaNayttaa" value="1" checked=""><b><label for="saaNayttaa">Hyväksyn nimeni julkaisemisen verkossa ryhmään ilmoittautuneiden listassa</label></b>
+        
+
+
+
+<br>
+
+<table border="0">
+    <tbody>
+        <tr><td>
+                <input type="hidden" name="HenkKoht" value="0">
+                <input onclick="return DataCheck();" type="submit" name="TALLENNA" disabled="" value="Tallenna ilmoittautuminen">
+            </td></tr>	
+    </tbody>
+</table>
+
+<input type="hidden" name="CheckBoxLkm" value="0">
+<input type="hidden" name="CheckBoxLkmPois" value="0"> 
+<input type="hidden" name="OpetTap" value="20249311">
+
+<input type="hidden" name="onPrioLkm" value="0">
+<input type="hidden" name="eiPrioLkm" value="0">
+<input type="hidden" name="eHOPSpaluu" value="0">
+<input type="hidden" name="eHOPSpaluusivu" value="">
+<input type="hidden" name="JavaScriptOn" value="0">
+<input type="HIDDEN" name="OpetTapIlmLinkLkmMax" value="1">	
+<input type="HIDDEN" name="OpetPaikLinkLkmMax" value="3">
+</form>
+
+
+
+
+ 
+    
+    <table width="100%">
+        <tbody>
+        <form id="4" method="post" action="https://weboodi.ulapland.fi/lay/opintjakstied.jsp?MD5avain=ca56d810219f00cc6a2cd9d6aa1ca7b8&amp;Kieli=1&amp;OpinKohd=18658847&amp;takaisin=omatopinn.jsp&amp;NaytSuun=0&amp;NaytSuor=0&amp;NaytHyl=0&amp;NaytIlm=1"></form>
+            <tr><td class="puhval" align="left">
+                    <input type="submit" name="takaisin" value="Takaisin">
+                    <input type="hidden" name="webHistory" value="1">
+        
+        </td></tr></tbody></table>
+        
+        
+        
+        
+        
+
+
+
+
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="mostPopularListingsApp">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="assets/angular.min.js"></script>
+    <script src="assets/angular-route.min.js"></script>
+    <script src="app.js"></script>
+    <script src="AboutController.js"></script>
+    <script src="HomeController.js"></script>
+    <script src="LoginController.js"></script>
+
+
+    <script src="assets/jquery-2.2.4.min.js"></script>
+    <script src="assets/moment.min.js"></script>
+    <script src="assets/bootstrap.min.js"></script>
+
+    <script src="assets/ui-bootstrap-tpls-1.3.3.min.js"></script>
+    <script src="assets/datetimepicker.js"></script>
+    <link href="assets/datetimepicker.css" type="text/css" rel="stylesheet">
+    <!--<script type="text/javascript" src="assets/datetimepicker/datetimepicker.js"></script>
+    <script type="text/javascript" src="assets/datetimepicker/datetimepicker.templates.js"></script>-->
+
+
+    <!-- Cascading Style Sheets -->
+    <link href="assets/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/custom.css" rel="stylesheet" media="screen">
+
+    <link rel="stylesheet" href="assets/datetimepicker/datetimepicker.css"/>
+    <!--<script src="eventCreator.js"></script>-->
+
+  </head>
+  <body>
+    <body>
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Get dates to Google Calendar!</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="#">Link</a>
+            </li>
+            <li>
+              <a href="#">Link</a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="glyphicon glyphicon-thumbs-up"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid" >
+        <div class="row" ng-view>
+
+        </div>
+        <!--<div class="row">
+          <input type="text" name="name" value="" id="selection">
+          <button id="signin" class="btn">Sign in</button>
+          <button id="revoke" class="btn" disabled>Revoke token</button>
+          <button id="reCheck" class="btn btn-error" >re-check</button>
+        </div>-->
+      </div>
+  </body>
+</html>
