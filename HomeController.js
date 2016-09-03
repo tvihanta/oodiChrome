@@ -18,18 +18,49 @@ angular.module('mostPopularListingsApp.home', ['ngRoute'])
 // Controller definition for this module
 .controller('HomeController', ['$scope', 'event', function($scope, event) {
 
+
+	var that = this;
 	init();
 	//populate selection
 	event.selection.then(function(pSelection){
 		console.log(pSelection.items);
 		$scope.selection = pSelection.selection;
 		$scope.events = pSelection.items;
+
 	});
 
 	function init(){
 
 	};
 	$scope.message = "Hello Home!";
+	$scope.options = {
+		 minDate: new Date(),
+		 showWeeks: true
+	 };
+
+	 $scope.datePicker = (function () {
+			 var method = {};
+			 method.instances = [];
+
+			 method.open = function ($event, instance) {
+					 $event.preventDefault();
+					 $event.stopPropagation();
+
+					 method.instances[instance] = !method.instances[instance];
+
+			 };
+
+			 method.options = {
+					 'show-weeks': false,
+					 startingDay: 0
+			 };
+
+			 var formats = ['MM/dd/yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+			 method.format = formats[0];
+
+			 return method;
+	 }());
+
 
 }])
 .factory('event', [ '$q', function($q) {
@@ -50,42 +81,7 @@ angular.module('mostPopularListingsApp.home', ['ngRoute'])
 
 
 
-	var strategies = [ //for web-oodi format multiple dates
-		function(pSel){
-			try {
-			  var parts = pSel.replace(/\s+/g, " ").split(" "); var time = moment(parts[0]);
-				var format = "D.M.YY HH.mm";
-
-        var items = [];
-				for (var i = 0, len=parts.length; i < len; i=i+4) {
-					var obj = {}
-					obj.startDatetime = moment(parts[i] +" "+parts[i+2].split("-")[0], format)
-					obj.endDatetime = moment(parts[i] +" "+parts[i+2].split("-")[1],format)
-					obj.location = parts[i+3]
-	        items.push(obj);
-				}
-				return items;
-			} catch (e) {
-				console.log("errori");
-        throw "homo";
-			}
-  	},
-
-  ]
-
-  function handleSelectedText(pselText) {
-		var selectedText = pselText; //
-  	$('#selection').val(pselText); var result;
-    for (var i=0, len=strategies.length; i < len; i++) {
-			try {
-				result = strategies[i](selectedText);
-				break;
-			} catch (e) {
-				console.log("error in strategy " + i);
-			}
-		}
-    return result;
- }
+	
 
 
 	return {

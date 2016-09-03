@@ -1,11 +1,33 @@
-<div class="col-12 form-inline" ng-repeat="item in events">
+<div class="col-12 form-inline" ng-repeat="item in events track by $index">
 	<div class="row">
+		<div class="col-1">
+			{{item.index}}
+		</div>
 		<div class="col-2">
+			
 			<input type="text" class="form-control" id="title" value="{{item.title}}" placeholder="title">
 		</div>
-		<div class="col-6">
-			<datetimepicker min-date="minDate" hour-step="hourStep"
-											 minute-step="minuteStep" ng-model="item.startDatetime" >
+		<div class="col-2">
+			<input type="text" class="form-control" id="location" value="{{item.location}}" placeholder="location">
+		</div>
+
+		<div class="col-4">
+			<p class="input-group">
+				 <input type="text" class="form-control"
+				   uib-datepicker-popup="yyyy-MM-dd"
+				   ng-model="item.startDatetime"
+					 datepicker-options="options"
+					 ng-required="true"
+					 close-text="Close"
+					 is-open="item.index"
+					 alt-input-formats="altInputFormats" />
+				 <span class="input-group-btn">
+					 <button type="button" class="btn btn-default"
+					   ng-click="open($event, 'opened_{{item.index}}')">
+						 <i class="glyphicon glyphicon-calendar"></i>
+					 </button>
+				 </span>
+			 </p>
 		</div>
 		<!--<div class="col-3">
 
