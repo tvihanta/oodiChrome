@@ -163,60 +163,59 @@ var AppView = Backbone.View.extend({
         //createEventObj();
       },
       strategies : [
-        //for web-oodi format multiple dates
+            //for web-oodi format multiple dates
     		function(pSel){
     			try {
-            console.log("strat 0");
-    			  var parts = pSel.replace(/\s+/g, " ").split(" ");
-            var time = moment(parts[0]);
-    				var format = "D.M.YY HH.mm";
-            var items = [];
-    				for (var i = 0, len=parts.length; i < len; i=i+4) {
-    					var obj = {};
-    					obj.startDatetime = moment(parts[i] +" "+parts[i+2].split("-")[0], format);
-    					obj.endDatetime = moment(parts[i] +" "+parts[i+2].split("-")[1],format);
+                console.log("strat 0");
+    			var parts = pSel.replace(/\s+/g, " ").split(" ");
+                var time = moment(parts[0]);
+    		    var format = "D.M.YY HH.mm";
+                var items = [];
+				for (var i = 0, len=parts.length; i < len; i=i+4) {
+					var obj = {};
+					obj.startDatetime = moment(parts[i] +" "+parts[i+2].split("-")[0], format);
+					obj.endDatetime = moment(parts[i] +" "+parts[i+2].split("-")[1],format);
 
-              if( obj.startDatetime.isValid() != true || obj.endDatetime.isValid() != true){
-                console.log("invalid date");
-                throw "invalid date"
-              }
+                    if( obj.startDatetime.isValid() != true||obj.endDatetime.isValid() != true){
+                    console.log("invalid date");
+                    throw "invalid date"
+                    }
 
-    					obj.location = parts[i+3];
-    					obj.num = i+1;
-    					obj.ident ="start_"+i
-    	        items.push(new Event(obj));
-    				}
-            console.log(items);
-    				return items;
+    				obj.location = parts[i+3];
+    				obj.num = i+1;
+    				obj.ident ="start_"+i
+        	        items.push(new Event(obj));
+		         }
+                console.log(items);
+				return items;
     			} catch (e) {
-            throw "error in web-oodi strategy";
-    			}
+                    throw "error in web-oodi strategy";
+	            }
       	},
         // for open-university style markup for multiple dates
         function(pSel){
     			try {
             console.log("strat 1");
             var items = [];
-            var reWhole = /(\d{1,2}.\d{1,2}.\d{2},\ {0,1}klo\ {0,1}\d{2}\.\d{2}-\d{2}\.\d{2})/gi;
+            var reWhole = /(\d{1,2}.\d{1,2}.\d{2},\ *klo\ *\d{2}\.\d{2}\ *-\ *\d{2}\.\d{2})/gi;
     			  var parts = pSel.match(reWhole);
             console.log(parts);
             for (var i = 0, len=parts.length; i < len; i++) {
-              var re = /(\d{1,2}.\d{1,2}.\d{2}),\ {0,1}klo\ {0,1}(\d{2}\.\d{2})-(\d{2}\.\d{2})/i;
+              var re = /(\d{1,2}.\d{1,2}.\d{2}),\ *klo\ *(\d{2}\.\d{2})\ *-\ *(\d{2}\.\d{2})/i;
               var found = parts[i].match(re);
               console.log(found);
               if(found !== null){
                 var format = "D.M.YY HH.mm";
                 var obj = {};
-      					obj.startDatetime = moment(found[1]+" "+found[2], format);
-      					obj.endDatetime = moment(found[1]+" "+found[3], format);
+                obj.startDatetime = moment(found[1]+" "+found[2], format);
+                obj.endDatetime = moment(found[1]+" "+found[3], format);
 
-                if( obj.startDatetime.isValid() != true || obj.endDatetime.isValid() != true){
-                  console.log("invalid date");
-                  throw "invalid date"
+                if(obj.startDatetime.isValid() != true ||obj.endDatetime.isValid()!=true){
+                    console.log("homonaamat");
+                    throw "invalid date";
                 }
-
-      					obj.num = i+1;
-      					obj.ident ="start_"+i
+                obj.num = i+1;
+                obj.ident ="start_"+i
       	        items.push(new Event(obj));
               }
             }
@@ -229,22 +228,21 @@ var AppView = Backbone.View.extend({
         //generic try something
         function(pSel){
           try {
-            console.log("strat 2");
-  					var obj = {};
-  					obj.startDatetime = moment(pSel);
-            if( obj.startDatetime.isValid() != true ){
-              console.log("invalid date");
-              throw "invalid date"
-            }
-  					obj.endDatetime = moment();
-  					obj.num = i+1;
-  					obj.ident ="start_"+i
-            console.log(obj);
-    				return [obj];
-    			} catch (e) {
-            throw "error in generic strategy";
-    			}
-
+                console.log("strat 2");
+    			var obj = {};
+    			obj.startDatetime = moment(pSel);
+                if( obj.startDatetime.isValid() != true ){
+                  console.log("invalid date");
+                  throw "invalid date"
+                }
+    			obj.endDatetime = moment();
+    			obj.num = i+1;
+    			obj.ident ="start_"+i
+                console.log(obj);
+				return [obj];
+    		} catch (e) {
+                throw "error in generic strategy";
+    		}
         }
 
       ],
@@ -270,8 +268,6 @@ var AppView = Backbone.View.extend({
 
   });
 
-
 $(function () {
     app = new AppView();
-
 });

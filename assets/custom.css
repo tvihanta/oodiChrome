@@ -1,12 +1,12 @@
 /**
  * Chrome Extension Twitter Bootstrap 3 Template
  * Custom CSS
- *	
+ *
  */
 
 body, section {			/* Change width and height to own preferences */
-	width: 500px;
-	height: 400px;
+
+
 	overflow-x: hidden;
 }
 
