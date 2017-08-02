@@ -16,7 +16,6 @@ chrome.contextMenus.onClicked.addListener(
                 type: 'popup',
                 width: 500,
                 height: 450
-                // incognito, top, left, ...
             });
         });
 
