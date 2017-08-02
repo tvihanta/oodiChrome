@@ -1,0 +1,28 @@
+{
+  "name": "Parse events to gCal",
+  "version": "0.11",
+  "manifest_version": 2,
+  "minimum_chrome_version": "29",
+  "key": "<key>",
+  "permissions": [
+      "tabs",
+      "activeTab",
+      "identity",
+      "contextMenus",
+      "https://accounts.google.com/*",
+      "https://www.googleapis.com/*",
+      "http://*/",
+      "https://*/",
+      "<all_urls>"
+      ],
+  "oauth2": {
+    "client_id": "<client_id>",
+    "scopes": ["https://www.googleapis.com/auth/plus.login", "https://www.googleapis.com/auth/calendar"]
+  },
+  "content_security_policy": "script-src 'self' https://apis.google.com; object-src 'self'",
+  "icons":{
+    "16": "icon_16_16.png"
+  },
+  "background":{ "scripts":["main.js"]}
+
+}
