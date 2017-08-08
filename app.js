@@ -166,24 +166,39 @@ var AppView = Backbone.View.extend({
             //for web-oodi format multiple dates
     		function(pSel){
     			try {
-                console.log("strat 0");
+                console.log("trying strategy 0");
     			var parts = pSel.replace(/\s+/g, " ").split(" ");
                 var time = moment(parts[0]);
     		    var format = "D.M.YY HH.mm";
                 var items = [];
+
 				for (var i = 0, len=parts.length; i < len; i=i+4) {
 					var obj = {};
 					obj.startDatetime = moment(parts[i] +" "+parts[i+2].split("-")[0], format);
 					obj.endDatetime = moment(parts[i] +" "+parts[i+2].split("-")[1],format);
-
-                    if( obj.startDatetime.isValid() != true||obj.endDatetime.isValid() != true){
-                    console.log("invalid date");
-                    throw "invalid date"
-                    }
-
-    				obj.location = parts[i+3];
+                    obj.location = parts[i+3];
     				obj.num = i+1;
     				obj.ident ="start_"+i
+
+                    if( obj.startDatetime.isValid() != true || obj.endDatetime.isValid() != true){
+
+                        // if several lecture-times for a single day use date from previous set
+                        // set i to the  correct position to account for extra lecture-times
+                        try {
+                            obj.startDatetime = moment(parts[i-4] +" "+parts[i+1].split("-")[0], format);
+                            obj.endDatetime = moment(parts[i-4] +" "+parts[i+1].split("-")[1],format);
+                            obj.location = parts[i+2];
+            				obj.num = i+1;
+            				obj.ident ="start_"+i
+                            i = i - 1;
+                        } catch (e) {
+                            console.log("invalid date");
+                            throw "invalid date"
+                        }
+
+                    }
+
+
         	        items.push(new Event(obj));
 		         }
                 console.log(items);
@@ -195,7 +210,7 @@ var AppView = Backbone.View.extend({
         // for open-university style markup for multiple dates
         function(pSel){
     			try {
-            console.log("strat 1");
+            console.log("strategy 1");
             var items = [];
             var reWhole = /(\d{1,2}.\d{1,2}.\d{2},\ *klo\ *\d{2}\.\d{2}\ *-\ *\d{2}\.\d{2})/gi;
     			  var parts = pSel.match(reWhole);
@@ -211,7 +226,6 @@ var AppView = Backbone.View.extend({
                 obj.endDatetime = moment(found[1]+" "+found[3], format);
 
                 if(obj.startDatetime.isValid() != true ||obj.endDatetime.isValid()!=true){
-                    console.log("homonaamat");
                     throw "invalid date";
                 }
                 obj.num = i+1;
@@ -228,7 +242,7 @@ var AppView = Backbone.View.extend({
         //generic try something
         function(pSel){
           try {
-                console.log("strat 2");
+                console.log("generic strategy");
     			var obj = {};
     			obj.startDatetime = moment(pSel);
                 if( obj.startDatetime.isValid() != true ){
